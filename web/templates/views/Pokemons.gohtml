@@ -1,0 +1,56 @@
+{{define "views/Pokemons.gohtml"}}
+
+{{template "components/Head.gohtml"}}
+{{template "components/Navbar.gohtml" .NavigationLinks}}
+
+<div class="container-fluid bg-light bg-gradient">
+  <div class="container-xxl pt-5">
+    <div class="row row-cols-auto g-2 mt-5">
+      {{range .Data}}
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" align="center" id="{{.Name}}">
+        <div class="card m-1" style="width: 18rem;" onMouseOver="this.style.transform = ('scale(1.1)');this.style.transition='0.3s';"
+          onMouseOut="this.style.transform = ('scale(1)');this.style.transition='0.3s';" align="start">
+          <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}">
+          <div class="card-body">
+            <h5 class="card-title">
+              <span>Name: </span>
+              <span>{{.Name}}</span>
+            </h5>
+            <p class="card-text">
+            <div class="row">
+              <div class="col-6">
+                <strong>Weight: </strong>
+                <span>{{.Weight}}</span>
+              </div>
+              <div class="col-6">
+                <strong>Height:</strong>
+                <span>{{.Height}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Types: </strong>
+                <span>{{.Types}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Moves: </strong>
+                <p>{{.Moves}}</p>
+
+              </div>
+            </div>
+
+
+            </p>
+          </div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</div>
+
+{{template "components/Footer.gohtml"}}
+
+{{end}}
