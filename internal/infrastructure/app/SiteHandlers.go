@@ -16,7 +16,7 @@ func (s *ApplicationServer) pokemonPageHandler() func(*gin.Context) {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "views/Pokemons.gohtml", pokemongotemplates.PageData{
 			NavigationLinks: pokemongotemplates.NavigationLinks,
-			Data:            *data,
+			Data:            data,
 		})
 	}
 }

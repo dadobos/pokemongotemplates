@@ -27,7 +27,7 @@ type Pokemon struct {
 
 type PageData struct {
 	NavigationLinks []SiteLink
-	Data     []Pokemon
+	Data     map[string]*Pokemon
 }
 
 type PokemonMove struct {
