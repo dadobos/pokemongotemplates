@@ -1,4 +1,4 @@
-module github.com/diaid83/pokemongotemplates
+module github.com/dadobos/pokemongotemplates
 
 go 1.17
 

@@ -1,0 +1,21 @@
+{{define "views/PaginationPokemons.gohtml"}}
+
+	{{template "components/Head.gohtml"}}
+	{{template "components/Navbar.gohtml" .}}
+
+		<div class="container-fluid text-bg-dark">
+			<div class="container-xxl pt-5">
+				{{template "components/Pagination.gohtml" .}}
+				<div
+					class="row row-cols-auto g-2 align-items-center justify-content-center">
+					{{ range .Data.PokemonMap }}
+					  {{template "components/PokemonCard.gohtml" .}}
+					{{ end }}
+				</div>
+				{{template "components/Pagination.gohtml" .}}
+			</div>
+		</div>
+
+	{{template "components/Footer.gohtml"}}
+
+{{ end }}

@@ -1,0 +1,59 @@
+{{define "components/PokemonCard.gohtml"}}
+<div  class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12" 
+      align="center" 
+      id="{{.Name}}">
+    <div  class="card m-1 text-bg-secondary" 
+          style="width: 18rem;" 
+          onMouseOver="this.style.transform = ('scale(1.05)');this.style.transition='0.3s';"
+          onMouseOut="this.style.transform = ('scale(1)');this.style.transition='0.3s';" 
+          align="start">
+
+          {{if ne .Image ""}}
+            <img  src="{{.Image}}" 
+                  class="card-img-top" 
+                  alt="{{.Name}}">
+            {{else}}
+            <picture>
+              <!-- <source 
+                    srcset="https://res.cloudinary.com/dadobos/image/upload/v1669533239/web/qhvaith9pdepdylkekzl.webp" 
+                    type="image/webp"/> -->
+              <img  src="https://res.cloudinary.com/dadobos/image/upload/v1669533239/web/qhvaith9pdepdylkekzl.png" 
+                    class="card-img-top" 
+                    alt="{{.Name}}"
+                    loading="lazy">
+            </picture>
+          {{end}}
+       <div class="card-body">
+           <h5 class="card-title">
+             <span>Name: </span>
+             <span class="text-capitalize">{{.Name}}</span>
+           </h5>
+           <p class="card-text">
+           <div class="row">
+             <div class="col-6">
+               <strong>Weight: </strong>
+               <span>{{.Weight}}</span>
+             </div>
+             <div class="col-6">
+               <strong>Height:</strong>
+               <span>{{.Height}}</span>
+             </div>
+           </div>
+           <div class="row">
+             <div class="col">
+               <strong>Types: </strong>
+               <span>{{.Types}}</span>
+             </div>
+           </div>
+           <div class="row">
+             <div class="col">
+               <strong>Moves: </strong>
+               <p>{{.Moves}}</p>
+             </div>
+           </div>
+           </p>
+      </div>
+    </div>
+</div>
+
+{{end}}

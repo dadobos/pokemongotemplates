@@ -1,25 +1,57 @@
 {{define "components/Navbar.gohtml"}}
-<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href="#">Pokemon Go Templates</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        {{range .}}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{.Link}}">{{.Title}}</a>
-        </li>
-        {{end}}
-      </ul>
-      <form class="d-flex" onsubmit="document.getElementById(document.getElementById('search').value).scrollIntoView();return false">
-        <input class="form-control me-2" type="search" id="search" name="search" placeholder="Pokemon Name" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
+<nav class="navbar navbar-expand-lg fixed-top bg-dark">
+	<div class="container">
+		<a class="navbar-brand text-info" href="/">Pokemon Go Templates</a>
+		<button
+			class="navbar-toggler btn btn-sm text-bg-info"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent"
+			aria-expanded="false"
+			aria-label="Toggle navigation"
+		>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				{{range.NavigationLinks}}
+				<li class="nav-item">
+					<a
+						class="nav-link active text-info"
+						aria-current="page"
+						href="{{.Link}}"
+					>
+						{{.Title}}
+					</a>
+				</li>
+				{{end}}
+			</ul>
+			<form
+				autocomplete="off"
+				class="d-flex"
+				onsubmit="document.getElementById(document.getElementById('search').value).scrollIntoView();return false"
+			>
+				<div class="autocomplete" style="width: 300px">
+					<input
+						class="form-control me-2"
+						type="text"
+						id="search"
+						name="search"
+						placeholder="Pokemon Name"
+						aria-label="Search"
+						list="searchList"
+					/>
+					<datalist id="searchList">
+						{{ range.Data.SortedPokemons }}
+						<option value="{{.}}"></option>
+						{{ end }}
+					</datalist>
+				</div>
+				<button class="btn btn-outline-info" type="submit">Search</button>
+			</form>
+		</div>
+	</div>
 </nav>
 
 {{ end }}

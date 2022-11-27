@@ -1,0 +1,40 @@
+{{define "components/Pagination.gohtml"}}
+<nav class="p-3">
+  <ul class="pagination justify-content-center">
+    {{if .Data.Previous}}
+    <li class="page-item">
+          <form   enctype="application/x-www-form-urlencoded"
+              action="/form/send-pagination" 
+              method="get">
+          <label>
+            <input name="url" type="hidden" value="{{.Data.Previous}}">
+          </label>
+          <button   class="btn btn-outline-info"
+                    type="submit">
+                    Previous
+          </button>
+          </form>
+    </li>
+    {{end}}
+    {{if .Data.Next}}
+    <li class="page-item">
+      <form   enctype="application/x-www-form-urlencoded"
+      action="/form/send-pagination" 
+      method="get">
+       <label>
+         <input type="hidden" 
+                name="url" 
+                value="{{.Data.Next}}">
+       </label>
+       <button   class="btn btn-outline-info"
+                 type="submit">
+                 Next
+       </button>
+      </form>
+    </li>
+    {{end}}
+  </ul>
+</nav>
+
+
+{{end}}

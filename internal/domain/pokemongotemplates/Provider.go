@@ -5,13 +5,24 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"sort"
 	"sync"
 )
 
-func GetPokemons() (map[string]*Pokemon, error) {
-	//get pokemon data from api
-	resp, err := http.Get("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=500")
+const (
+	AllPokemonsURL = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1154"
+	PaginationURL  = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=20"
+)
 
+func GetPokemons(url string) (Pokemons, error) {
+
+	//get pokemon data from api
+	URL := url
+	if url == "" {
+		URL = PaginationURL
+	}
+
+	resp, err := http.Get(URL)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -28,16 +39,7 @@ func GetPokemons() (map[string]*Pokemon, error) {
 		fmt.Println(err.Error())
 	}
 
-	// PokemonSlice := make([]Pokemon, 0)
-
-	// for i := range pokemonsData.Results {
-	// 	go func() {
-	// 		indPokemon := fetchIndividualPokemons(pokemonsData.Results[i].URL)
-	// 		PokemonSlice = append(PokemonSlice, indPokemon)
-	// 	}()
-	// }
-
-	PokemonMap := make(map[string]*Pokemon)
+	pokemonMap := make(map[string]*Pokemon)
 
 	pokemonStream := make(chan Pokemon)
 
@@ -47,14 +49,14 @@ func GetPokemons() (map[string]*Pokemon, error) {
 	for i := range pokemonsData.Results {
 		go func(iterator int) {
 			defer wg.Done()
-			indPokemon := fetchIndividualPokemons(pokemonsData.Results[iterator].URL)
+			indPokemon := fetchIndividualPokemon(pokemonsData.Results[iterator].URL)
 			pokemonStream <- indPokemon
 		}(i)
 	}
 
 	for range pokemonsData.Results {
 		p := <-pokemonStream
-		PokemonMap[p.Name] = &p
+		pokemonMap[p.Name] = &p
 	}
 
 	go func() {
@@ -62,12 +64,25 @@ func GetPokemons() (map[string]*Pokemon, error) {
 		close(pokemonStream)
 	}()
 
-	fmt.Print(len(PokemonMap))
+	sortedPokemonSlice := make([]string, len(pokemonsData.Results))
+	for pokemon := range pokemonMap {
+		name := pokemonMap[pokemon].Name
+		sortedPokemonSlice = append(sortedPokemonSlice, name)
+	}
+	sort.Strings(sortedPokemonSlice)
 
-	return PokemonMap, nil
+	pokemons := Pokemons{
+		Count:          pokemonsData.Count,
+		Next:           pokemonsData.Next,
+		Previous:       pokemonsData.Previous,
+		SortedPokemons: sortedPokemonSlice,
+		PokemonMap:     pokemonMap,
+	}
+
+	return pokemons, nil
 }
 
-func fetchIndividualPokemons(pokemonURL string) Pokemon {
+func fetchIndividualPokemon(pokemonURL string) Pokemon {
 	resp, err := http.Get(pokemonURL)
 	if err != nil {
 		fmt.Println(err.Error())

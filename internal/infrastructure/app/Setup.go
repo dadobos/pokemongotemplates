@@ -6,9 +6,10 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
+	"text/template"
 	"time"
 
-	"github.com/diaid83/pokemongotemplates/internal/infrastructure"
+	"github.com/dadobos/pokemongotemplates/internal/infrastructure"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +21,13 @@ type ApplicationState struct {
 
 type ApplicationServer struct {
 	State ApplicationState
+}
+
+var templateFunctionMap = template.FuncMap{
+
+	"GetCurrentYear":      infrastructure.GetCurrentYear,
+	"GetPrevPagePokemons": infrastructure.GetPrevPagePokemons,
+	"GetNextPagePokemons": infrastructure.GetNextPagePokemons,
 }
 
 func (s *ApplicationServer) registerHandlers() {
@@ -36,9 +44,14 @@ func (s *ApplicationServer) registerHandlers() {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	s.State.Handler.SetFuncMap(templateFunctionMap)
+
 	s.State.Handler.LoadHTMLFiles(files...)
-	s.State.Handler.GET("/", s.pokemonPageHandler())
-	s.State.Handler.GET("/custom", s.customPokemonPageHandler())
+	s.State.Handler.GET("/", s.pageHandler())
+	s.State.Handler.GET("/pagination", s.paginationPageHandler())
+
+	s.State.Handler.GET("/form/send-pagination", s.slugSendPaginationRequestHandler())
 }
 
 func NewApplicationServer(userOptions *ApplicationState) *ApplicationServer {

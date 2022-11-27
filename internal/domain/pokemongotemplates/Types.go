@@ -7,12 +7,12 @@ type SiteLink struct {
 
 var NavigationLinks = []SiteLink{
 	{
-		Title: "500 Pokemons",
+		Title: "All Pokemons",
 		Link:  "/",
 	},
 	{
-		Title: "Choose how many",
-		Link:  "/custom",
+		Title: "With Pagination",
+		Link:  "/pagination",
 	},
 }
 
@@ -25,9 +25,21 @@ type Pokemon struct {
 	Image  string
 }
 
+type Pokemons struct {
+	Count          int
+	Next           string
+	Previous       string
+	SortedPokemons []string
+	PokemonMap     map[string]*Pokemon
+}
+
 type PageData struct {
 	NavigationLinks []SiteLink
-	Data     map[string]*Pokemon
+	Data            Pokemons
+}
+
+type NextURL struct {
+	URL string `form:"url"`
 }
 
 type PokemonMove struct {
@@ -68,5 +80,8 @@ type PokemonAPIResult struct {
 	URL  string `json:"url"`
 }
 type PokemonsAPIResponse struct {
-	Results []PokemonAPIResult `json:"results"`
+	Count    int                `json:"count"`
+	Next     string             `json:"next"`
+	Previous string             `json:"previous"`
+	Results  []PokemonAPIResult `json:"results"`
 }

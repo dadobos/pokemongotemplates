@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/diaid83/pokemongotemplates/internal/infrastructure"
-	"github.com/diaid83/pokemongotemplates/internal/infrastructure/app"
+	"github.com/dadobos/pokemongotemplates/internal/infrastructure"
+	"github.com/dadobos/pokemongotemplates/internal/infrastructure/app"
 )
 
 func ListenAndServeGoRoutine(srv *http.Server) {
